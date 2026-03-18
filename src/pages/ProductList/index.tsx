@@ -1,59 +1,34 @@
 import { useState } from "react";
-import { Table, Input, Select, Space, Typography } from "antd";
+import { Table, Input, Select, Typography, Tag, Space, Badge } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
+import { SearchOutlined, AppstoreOutlined, EyeOutlined } from "@ant-design/icons";
 import {
   useGetProductsQuery,
   useSearchProductsQuery,
   useGetCategoriesQuery,
   useGetProductsByCategoryQuery,
 } from "../../redux/features/products/productsApi";
+import styles from "./ProductList.module.scss";
 import type { Category, Product } from "../../types/products";
+import  { TableSkeleton } from "../../components/common/Skeleton/TableSkeleton";
 
 const { Search } = Input;
 const { Option } = Select;
-const { Title } = Typography;
 
 const PAGE_SIZE = 10;
 
-const columns = (navigate: ReturnType<typeof useNavigate>): ColumnsType<Product> => [
-  {
-    title: "Title",
-    dataIndex: "title",
-    key: "title",
-  },
-  {
-    title: "Price",
-    dataIndex: "price",
-    key: "price",
-    render: (price: number) => `$${price}`,
-  },
-  {
-    title: "Rating",
-    dataIndex: "rating",
-    key: "rating",
-    render: (rating: number) => rating.toFixed(1),
-  },
-  {
-    title: "Stock",
-    dataIndex: "stock",
-    key: "stock",
-  },
-  {
-    title: "Category",
-    dataIndex: "category",
-    key: "category",
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <button onClick={() => navigate(`/products/${record.id}`)} className="text-blue-600 hover:underline">
-        View
-      </button>
-    ),
-  },
-];
+const getRatingColor = (rating: number) => {
+  if (rating >= 4.5) return "#22c55e";
+  if (rating >= 3.5) return "#f59e0b";
+  return "#ef4444";
+};
+
+const getStockStatus = (stock: number) => {
+  if (stock > 50) return { color: "success", text: stock };
+  if (stock > 10) return { color: "warning", text: stock };
+  return { color: "error", text: stock };
+};
 
 const index = () => {
   const navigate = useNavigate();
@@ -102,26 +77,102 @@ const index = () => {
     setPage(1);
   };
 
-  const handleClearFilters = () => {
+  const handleClear = () => {
     setSearchQuery("");
     setSelectedCategory("");
     setPage(1);
   };
 
-  return (
-    <div>
-      <Title level={3}>Products</Title>
+  const columns: ColumnsType<Product> = [
+    {
+      title: "Product",
+      key: "product",
+      render: (_, record) => (
+        <div className={styles.productCell}>
+          <img src={record.thumbnail} alt={record.title} className={styles.thumbnail} />
+          <span className={styles.productTitle}>{record.title}</span>
+        </div>
+      ),
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      render: (category: string) => <Tag className={styles.categoryTag}>{category}</Tag>,
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price: number) => <span className={styles.price}>${price.toFixed(2)}</span>,
+      sorter: (a, b) => a.price - b.price,
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
+      render: (rating: number) => (
+        <span className={styles.rating} style={{ color: getRatingColor(rating) }}>
+          ★ {rating.toFixed(1)}
+        </span>
+      ),
+      sorter: (a, b) => a.rating - b.rating,
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      render: (stock: number) => {
+        const status = getStockStatus(stock);
+        return <Badge status={status.color as "success" | "warning" | "error"} text={status.text} />;
+      },
+      sorter: (a, b) => a.stock - b.stock,
+    },
+    {
+      title: "",
+      key: "action",
+      render: (_, record) => (
+        <button className={styles.viewBtn} onClick={() => navigate(`/products/${record.id}`)}>
+          <EyeOutlined /> View
+        </button>
+      ),
+    },
+  ];
 
-      <Space className="mb-4 flex flex-wrap gap-2">
-        <Search placeholder="Search products..." onSearch={handleSearch} allowClear style={{ width: 300 }} onClear={handleClearFilters} />
+  return (
+    <div className={styles.container}>
+      {/* Header */}
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>
+            <AppstoreOutlined className={styles.titleIcon} />
+            Products
+          </h1>
+          <p className={styles.subtitle}>
+            {getTotal()} items {selectedCategory ? `in ${selectedCategory}` : searchQuery ? `matching "${searchQuery}"` : "total"}
+          </p>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className={`${styles.filters} w-full `}>
+        <Search
+          prefix={<SearchOutlined className={styles.searchIcon} />}
+          placeholder="Search products..."
+          onSearch={handleSearch}
+          allowClear
+          onClear={handleClear}
+          className={`${styles.searchInput} flex-1`}
+        />
 
         <Select
-          placeholder="Filter by category"
+          placeholder="All Categories"
           style={{ width: 200 }}
           allowClear
           value={selectedCategory || undefined}
           onChange={handleCategoryChange}
-          onClear={handleClearFilters}
+          onClear={handleClear}
+          suffixIcon={<AppstoreOutlined />}
         >
           {categories?.map((cat: Category) => (
             <Option key={cat.slug} value={cat.slug}>
@@ -129,21 +180,37 @@ const index = () => {
             </Option>
           ))}
         </Select>
-      </Space>
 
-      <Table
-        columns={columns(navigate)}
-        dataSource={getTableData()}
-        rowKey="id"
-        loading={isLoading}
-        pagination={{
-          current: page,
-          pageSize: PAGE_SIZE,
-          total: getTotal(),
-          onChange: (p) => setPage(p),
-          showTotal: (total) => `Total ${total} products`,
-        }}
-      />
+        {(searchQuery || selectedCategory) && (
+          <button className={styles.clearBtn} onClick={handleClear}>
+            Clear filters
+          </button>
+        )}
+      </div>
+
+      {/* Table */}
+      {isLoading ? (
+        <TableSkeleton rows={8} columns={5} />
+      ) : (
+        <div className={styles.tableWrapper}>
+          <Table
+            columns={columns}
+            dataSource={getTableData()}
+            rowKey="id"
+            loading={isLoading}
+            className={styles.table}
+            rowClassName={styles.tableRow}
+            pagination={{
+              current: page,
+              pageSize: PAGE_SIZE,
+              total: getTotal(),
+              onChange: (p) => setPage(p),
+              showTotal: (total, range) => `${range[0]}–${range[1]} of ${total}`,
+              showSizeChanger: false,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

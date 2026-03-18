@@ -3,9 +3,9 @@ import Navbar from "./components/common/Navbar";
 
 const App = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div style={{ minHeight: "100vh", background: "#f8fafc" }}>
       <Navbar />
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px" }}>
         <Outlet />
       </main>
     </div>
