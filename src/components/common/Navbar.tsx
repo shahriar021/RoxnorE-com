@@ -19,7 +19,7 @@ const Navbar = () => {
         overflow: "hidden",
       }}
     >
-      {/* Header */}
+     
       <div
         style={{
           display: "flex",
@@ -49,7 +49,7 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* List */}
+      
       {recentlyViewed.length === 0 ? (
         <div style={{ padding: "20px 16px", textAlign: "center", color: "#94a3b8", fontSize: 13 }}>No recently viewed products</div>
       ) : (
@@ -110,7 +110,7 @@ const Navbar = () => {
         boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
       }}
     >
-      {/* Logo */}
+    
       <Link to="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
         <div
           style={{
@@ -128,7 +128,7 @@ const Navbar = () => {
         <span style={{ fontWeight: 700, fontSize: 18, color: "#0f172a", letterSpacing: "-0.3px" }}>Roxnor</span>
       </Link>
 
-      {/* Right side */}
+     
       <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
         <Link
           to="/"

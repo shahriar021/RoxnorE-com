@@ -4,8 +4,6 @@ import { baseApi } from "./createdApi/baseApi";
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
-    // watchLater: watchLaterReducer,
-    // recentlyViewed: recentlyViewedReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 });

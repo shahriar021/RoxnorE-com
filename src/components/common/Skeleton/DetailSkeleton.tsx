@@ -3,9 +3,9 @@ import type { DetailSkeletonProps } from "../../../types/products";
 
 export const DetailSkeleton = ({ imageHeight=340,thumbnailCount = 4, infoRows = 3 }: DetailSkeletonProps) => (
   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", overflow: "hidden" }}>
-    {/* Left */}
+    
     <div style={{ padding: 24, background: "#f8fafc", borderRight: "1px solid #f1f5f9" }}>
-      {/* Main image placeholder */}
+      
       <div
         style={{
           width: "100%",
@@ -19,7 +19,7 @@ export const DetailSkeleton = ({ imageHeight=340,thumbnailCount = 4, infoRows = 
         }}
       />
 
-      {/* Thumbnails */}
+      
       <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
         {Array.from({ length: thumbnailCount }).map((_, i) => (
           <div
@@ -39,7 +39,7 @@ export const DetailSkeleton = ({ imageHeight=340,thumbnailCount = 4, infoRows = 
       </div>
     </div>
 
-    {/* Right */}
+   
     <div style={{ padding: 32, display: "flex", flexDirection: "column", gap: 20 }}>
       <Skeleton active title={{ width: "60%" }} paragraph={{ rows: infoRows }} />
       <Skeleton active title={{ width: "40%" }} paragraph={{ rows: 0 }} />

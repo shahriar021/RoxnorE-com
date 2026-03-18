@@ -17,7 +17,7 @@ const getStored = (): RecentProduct[] => {
 export const useRecentlyViewed = () => {
   const [recentlyViewed, setRecentlyViewed] = useState<RecentProduct[]>(getStored);
 
-  // listen for updates from other components
+ 
   useEffect(() => {
     const handleUpdate = () => {
       setRecentlyViewed(getStored());
@@ -45,7 +45,7 @@ export const useRecentlyViewed = () => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       window.dispatchEvent(new Event(EVENT_KEY));
     } catch {
-      // ignore
+      
     }
 
     setRecentlyViewed(updated);

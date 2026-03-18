@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Button, Drawer, Form, Input, InputNumber, Tag, Spin, Alert, Image } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, Tag, Alert, Image } from "antd";
 import { ArrowLeftOutlined, EditOutlined, StarFilled, InboxOutlined, DollarOutlined } from "@ant-design/icons";
 import { useGetProductByIdQuery } from "../../redux/features/products/productsApi";
 import styles from "./ProductDetails.module.scss";
@@ -14,12 +14,10 @@ const index = () => {
   const [form] = Form.useForm();
   const [activeImage, setActiveImage] = useState(0);
 
-  // inside component
   const { addToRecentlyViewed } = useRecentlyViewed();
 
   const { data: product, isLoading, isError } = useGetProductByIdQuery(Number(id));
 
-  // add this useEffect after the query
   useEffect(() => {
     if (product) {
       addToRecentlyViewed(product);
@@ -81,7 +79,6 @@ const index = () => {
 
   return (
     <div className={styles.container}>
-      {/* Back */}
       <button className={styles.backBtn} onClick={() => navigate("/")}>
         <ArrowLeftOutlined /> Back to Products
       </button>
@@ -152,7 +149,6 @@ const index = () => {
         </div>
       </div>
 
-      {/* Edit Drawer */}
       <Drawer
         title="Edit Product"
         open={drawerOpen}
