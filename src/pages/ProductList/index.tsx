@@ -11,7 +11,7 @@ import {
 } from "../../redux/features/products/productsApi";
 import styles from "./ProductList.module.scss";
 import type { Category, Product } from "../../types/products";
-import  { TableSkeleton } from "../../components/common/Skeleton/TableSkeleton";
+import  { TableSkeleton } from "../../components/common/Skeleton";
 
 const { Search } = Input;
 const { Option } = Select;

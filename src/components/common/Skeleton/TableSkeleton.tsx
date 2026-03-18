@@ -1,9 +1,5 @@
 import { Skeleton } from "antd";
-
-interface TableSkeletonProps {
-  rows?: number;
-  columns?: number;
-}
+import type { TableSkeletonProps } from "../../../types/products";
 
 export const TableSkeleton = ({ rows = 8, columns = 5 }: TableSkeletonProps) => (
   <div>

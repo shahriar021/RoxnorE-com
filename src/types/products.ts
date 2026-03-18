@@ -22,3 +22,22 @@ export interface Category {
   name: string;
   url: string;
 }
+
+export interface DetailSkeletonProps {
+  thumbnailCount?: number;
+  infoRows?: number;
+  imageHeight?: number;
+}
+
+export interface TableSkeletonProps {
+  rows?: number;
+  columns?: number;
+}
+
+export interface RecentProduct {
+  id: number;
+  title: string;
+  thumbnail: string;
+  price: number;
+  category: string;
+}
