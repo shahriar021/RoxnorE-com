@@ -1,4 +1,4 @@
-# Roxnor — React Developer Assessment
+# Roxnor — Product Management
 
 A product management interface built with React, TypeScript, and Redux Toolkit.
 
@@ -126,7 +126,7 @@ A custom `useRecentlyViewed` hook manages recently viewed products in localStora
 
 ## Features Implemented
 
-### Task 1 — Product List
+### — Product List
 - Ant Design Table with product thumbnail, title, price, rating, stock, category
 - Pagination with total count
 - Search via `/products/search` endpoint
@@ -134,7 +134,7 @@ A custom `useRecentlyViewed` hook manages recently viewed products in localStora
 - Color-coded ratings and stock badges
 - View button navigates to product detail
 
-### Task 2 — Product Detail
+### — Product Detail
 - Dynamic routing via `/products/:id`
 - Image gallery with clickable thumbnails
 - Price, rating, stock displayed as stat cards
@@ -142,7 +142,7 @@ A custom `useRecentlyViewed` hook manages recently viewed products in localStora
 - Form validation with custom rules (required, min length, number ranges)
 - Loading and error states handled
 
-### Bonus
+### some extra work
 - **Skeleton loaders** — both list and detail pages show skeleton UI while fetching
 - **Recently Viewed** — last 5 viewed products stored in localStorage, accessible from navbar dropdown with clear option
 - **Environment variables** — API base URL stored in `.env`, not hardcoded
